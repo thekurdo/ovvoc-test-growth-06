@@ -4,8 +4,8 @@ import { ApiResponse, Article, CreateArticleBody } from './types';
 
 const router = Router();
 
-// List or get by optional id — :id? breaks in Express 5
-router.get('/articles/:id?', (req: Request, res: Response) => {
+// List or get by optional id — {/:id} breaks in Express 5
+router.get('/articles/{/:id}', (req: Request, res: Response) => {
   const id = req.params.id;
   if (id) {
     const article = store.getById(parseInt(id));
@@ -20,8 +20,8 @@ router.get('/articles/:id?', (req: Request, res: Response) => {
   res.json(resp);
 });
 
-// Get by slug — :slug? optional breaks in Express 5
-router.get('/articles/by-slug/:slug?', (req: Request, res: Response) => {
+// Get by slug — {/:slug} optional breaks in Express 5
+router.get('/articles/by-slug/{/:slug}', (req: Request, res: Response) => {
   const slug = req.params.slug;
   if (!slug) {
     return res.status(400).json({ success: false, error: 'slug required' });
@@ -69,7 +69,7 @@ router.get('/search', (req: Request, res: Response) => {
 });
 
 // Catch-all for API help — /help/* wildcard breaks in Express 5
-router.get('/help/*', (req: Request, res: Response) => {
+router.get('/help/{*path}', (req: Request, res: Response) => {
   res.json({ success: true, data: { topic: req.url, message: 'API help' } });
 });
 
